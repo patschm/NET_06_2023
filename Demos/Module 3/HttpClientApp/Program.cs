@@ -22,9 +22,9 @@ public class Program
         //    svcs.AddHttpClient();
         //});
 
-        //BasicClientAsync();
-        //DIClient();
-        StrongClient();
+       // BasicClientAsync();
+        DIClient();
+        //StrongClient();
         //PostClient();
         //AuthClient();
         Console.ReadLine();
@@ -121,7 +121,7 @@ public class Program
         var provider = builder.BuildServiceProvider();
 
         var clientFactory = provider.GetRequiredService<IHttpClientFactory>();
-        var client = clientFactory.CreateClient("weather");
+        HttpClient client = clientFactory.CreateClient("weather");
 
         var item = new WeatherForecast { Date = DateTime.Now, Summary = "Mottig", TemperatureC = 31 };
         var content = new StringContent(JsonConvert.SerializeObject(item));

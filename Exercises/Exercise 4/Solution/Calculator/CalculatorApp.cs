@@ -2,42 +2,41 @@ namespace Calculator
 {
     public partial class CalculatorApp : Form
     {
-        private SynchronizationContext Context;
         public CalculatorApp()
         {
             InitializeComponent();
-            Context = SynchronizationContext.Current;
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            //SynchronizationContext context = SynchronizationContext.Current;
+            //var lblOwner = SynchronizationContext.Current;
             if (int.TryParse(txtA.Text, out int a) && int.TryParse(txtB.Text, out int b))
             {
+                //Task.Run(() => LongAdd(a, b))
+                //.ContinueWith(pTask => UpdateAnswer(pTask.Result));
+                //.ContinueWith(pTask => lblOwner?.Post(UpdateAnswer!, pTask.Result));
+
                 //int result = LongAdd(a, b);
-                ////UpdateAnswer(result);
-                //Task.Run<int>(() => LongAdd(a,b))
-                //    .ContinueWith(pt => {
-                //        Context.Send(UpdateAnswer, pt.Result);
-                //       //UpdateAnswer(pt.Result);
+                //UpdateAnswer(result);
 
-                //        });
-                int result = await DoTheAdd(a, b);//.ConfigureAwait(false);
+                //int result =  await LongAddAsync(a, b);
+                //UpdateAnswer(result);
+
+                int result = DoeIets(a, b).Result;
                 UpdateAnswer(result);
-            }    
+
+            }
         }
 
-        private async Task<int> DoTheAdd(int a, int b)
+        private async Task<int> DoeIets(int a, int b)
         {
-            int result = await LongAddAsync(a, b);
-            return result;
-            //return LongAddAsync(a, b).Result;  // Dead lock
+            return await LongAddAsync(a, b);//.ConfigureAwait(false);
         }
+
         private void UpdateAnswer(object result)
         {
             lblAnswer.Text = result.ToString();
         }
-
         private int LongAdd(int a, int b)
         {
             Task.Delay(10000).Wait();
@@ -45,7 +44,7 @@ namespace Calculator
         }
         private Task<int> LongAddAsync(int a, int b)
         {
-            return Task.Run(() => LongAdd(a, b));
+            return Task.Run<int>(() => LongAdd(a, b));
         }
     }
 }
