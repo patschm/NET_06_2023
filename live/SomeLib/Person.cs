@@ -1,5 +1,7 @@
 ﻿namespace SomeLib;
 
+[Obsolete("Beter niet gebruiken", false)]
+[My(MyAge = 23)]
 public class Person
 {
     private int _age;
